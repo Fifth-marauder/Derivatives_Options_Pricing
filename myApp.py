@@ -3,8 +3,8 @@
 import streamlit as st
 import pandas as pd
 # import opstrat as op
-import matplotlib.pyplot as plt
-from PIL import Image
+# import matplotlib.pyplot as plt
+# from PIL import Image
 import numpy as np
 import altair as alt
 
