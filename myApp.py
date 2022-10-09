@@ -67,7 +67,7 @@ if option == 'PayOff Calculator':
     sps = np.ones(short_put)
 
     if long_call+short_call+long_put+short_put > 0:
-        st.write('Input the individual options')
+        st.write(""" ### Input the details of the Options""")
 
     
     col1, col2, col3, col4 = st.columns(4)
