@@ -15,7 +15,6 @@ option = st.sidebar.selectbox(
 # st.write('You selected:', option)
 st.header(option)
 st.write(""" ***By   :    Anu Varshini R, Abishek Srikanth and Kailash S***
-
 """ )
 # if option =='Stock Price':
 #     # st.subheader("Stock Price dashboard")
@@ -41,7 +40,7 @@ st.write(""" ***By   :    Anu Varshini R, Abishek Srikanth and Kailash S***
 
 if option == 'PayOff Calculator':
     st.sidebar.write("**Input stock price of underlying asset**")
-    underlying_price = st.sidebar.number_input('Stock Price',key = 'Underlying asset price', step =1, value = 100)
+    underlying_price = st.sidebar.number_input('Stock Price',key = 'Underlying asset price', step =1)
     st.sidebar.write("**Select the number of options**")
     layout=st.sidebar.columns(2)
 
@@ -132,39 +131,42 @@ if option == 'PayOff Calculator':
     # op.single_plotter(save=True,file='simple_option.jpeg')
     # image=Image.open("simple_option.jpeg")
     # st.image(image)
+    def call_payoff(sT, strike_price, premium):
+        return np.where(sT > strike_price, sT - strike_price, 0) - premium
 
-    def plot_option_payoff(k):
-    # x-axis
-        S_t = np.arange(start = 0, stop = 2*k, step = 0.1)
+    def put_payoff(sT, strike_price, premium):
+        return np.where(sT < strike_price, strike_price - sT, 0) - premium
+
+    def plot_final(underlying_price):
+        payoff_long_call=0
+        payoff_short_call=0
+        payoff_long_put=0
+        payoff_short_put=0
+        if long_call>0:
             
-        # defining y variables
-        y_1 = np.empty(len(S_t))
-        y_2 = np.empty(len(S_t))
-        y_3 = np.empty(len(S_t))
-        y_4 = np.empty(len(S_t))
-        
-
-        # y-axis is sum of payoffs
-        # long call
-        for i in range (len(S_t)):
-            y_1[i] = np.sum(np.maximum((S_t[i] - lcs), 0))
-        # short call
-            y_2[i] = np.sum(np.minimum((scs - S_t[i]), 0))
-        # long put
-            y_3[i] = np.sum(np.maximum((lps - S_t[i]), 0))
-        # short put
-            y_4[i] = np.sum(np.minimum((S_t[i] - sps), 0))
-        # buying a buying/selling stocks
-        s = (S_t - k)
-
-        # total
-        y = y_1 + y_2 + y_3 + y_4+s-portfolio_cost
+            for i in range(len(lcs)):
+                sT = np.arange(0.5*underlying_price,2*underlying_price,1)
+                payoff_long_call+=call_payoff(sT, lcs[i], lcp[i])
+        if short_call>0:
             
-        # converting to df
-        plot_data = pd.DataFrame({'Stock Price': S_t, 'Net Payoff': y})
+            for i in range(len(scs)):
+                sT = np.arange(0.5*underlying_price,2*underlying_price,1)
+                payoff_short_call+=call_payoff(sT, scs[i], scp[i])*-1
+        if long_put>0:
+            
+            for i in range(len(lps)):
+                sT=np.arange(0.5*underlying_price,2*underlying_price,1)
+                payoff_long_put+=put_payoff(sT, lps[i], lpp[i])
+        if short_put>0:
+            
+            for i in range(len(sps)):
+                sT=np.arange(0.5*underlying_price,2*underlying_price,1)
+                payoff_short_put+=put_payoff(sT, sps[i], spp[i])*-1
+        netpay=payoff_long_call+payoff_short_call+payoff_long_put+payoff_short_put
+        plot_data = pd.DataFrame({'Stock Price': sT, 'Net Payoff': netpay})
         return plot_data
 
-    dataset = plot_option_payoff(underlying_price)               
+    dataset = plot_final(underlying_price)               
     #Line Chart
 
     st.write(""" ### Payoff Graph""")
@@ -193,4 +195,3 @@ if option == 'Notes':
     st.image('https://analystprep.com/cfa-level-1-exam/wp-content/uploads/2019/10/56c-4.png')
     st.image('https://analystprep.com/cfa-level-1-exam/wp-content/uploads/2019/10/56c-5.png')
     
-
