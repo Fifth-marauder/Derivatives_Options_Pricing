@@ -14,7 +14,7 @@ option = st.sidebar.selectbox(
 
 # st.write('You selected:', option)
 st.header(option)
-st.write(""" ***By   :    Anu Varshini R, Abishek Srikanth and Kailash S***
+st.write(""" ***By   :    Anu Varshini R, Abishek Srikanth, Kailash S & Akash***
 """ )
 # if option =='Stock Price':
 #     # st.subheader("Stock Price dashboard")
@@ -124,9 +124,9 @@ if option == 'PayOff Calculator':
     if portfolio_cost == 0:
         st.metric(label="Cost to set up the portfolio", value = ('$'+str(0)))
     if portfolio_cost > 0:
-        st.metric(label="Cost to set up the portfolio", value = ('$'+str(abs(portfolio_cost))), delta='Loss',delta_color= "inverse")
+        st.metric(label="Cost to set up the portfolio", value = ('$'+str(abs(portfolio_cost))), delta='Cash Out',delta_color= "inverse")
     if portfolio_cost < 0:
-        st.metric(label="Cost to set up the portfolio", value = ('$'+str(abs(portfolio_cost))), delta='Profit')
+        st.metric(label="Cost to set up the portfolio", value = ('$'+str(abs(portfolio_cost))), delta='Cash In')
 
     # op.single_plotter(save=True,file='simple_option.jpeg')
     # image=Image.open("simple_option.jpeg")
