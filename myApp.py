@@ -145,22 +145,22 @@ if option == 'PayOff Calculator':
         if long_call>0:
             
             for i in range(len(lcs)):
-                sT = np.arange(0.5*underlying_price,2*underlying_price,1)
+                sT = np.arange(0,2*underlying_price,1)
                 payoff_long_call+=call_payoff(sT, lcs[i], lcp[i])
         if short_call>0:
             
             for i in range(len(scs)):
-                sT = np.arange(0.5*underlying_price,2*underlying_price,1)
+                sT = np.arange(0,2*underlying_price,1)
                 payoff_short_call+=call_payoff(sT, scs[i], scp[i])*-1
         if long_put>0:
             
             for i in range(len(lps)):
-                sT=np.arange(0.5*underlying_price,2*underlying_price,1)
+                sT=np.arange(0,2*underlying_price,1)
                 payoff_long_put+=put_payoff(sT, lps[i], lpp[i])
         if short_put>0:
             
             for i in range(len(sps)):
-                sT=np.arange(0.5*underlying_price,2*underlying_price,1)
+                sT=np.arange(0,2*underlying_price,1)
                 payoff_short_put+=put_payoff(sT, sps[i], spp[i])*-1
         netpay=payoff_long_call+payoff_short_call+payoff_long_put+payoff_short_put
         plot_data = pd.DataFrame({'Stock Price': sT, 'Net Payoff': netpay})
