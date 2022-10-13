@@ -41,6 +41,9 @@ st.write(""" ***By   :    Anu Varshini R, Abishek Srikanth, Kailash S & Akash***
 if option == 'PayOff Calculator':
     st.sidebar.write("**Input stock price of underlying asset**")
     underlying_price = st.sidebar.number_input('Stock Price',key = 'Underlying asset price', step =1)
+    option_ls = st.sidebar.selectbox(
+    'Long/Short?',
+    ('','Long', 'Short'))
     st.sidebar.write("**Select the number of options**")
     layout=st.sidebar.columns(2)
 
@@ -119,14 +122,14 @@ if option == 'PayOff Calculator':
     # st.write(lpp)
     # st.write(lps)
   
-    portfolio_cost = underlying_price + np.sum(lcp) + np.sum(lpp) - np.sum(scp) - np.sum(spp)
+    portfolio_cost =  np.sum(lcp) + np.sum(lpp) - np.sum(scp) - np.sum(spp)
     st.write(""" ### Set up cost""")
     if portfolio_cost == 0:
         st.metric(label="Cost to set up the portfolio", value = ('$'+str(0)))
     if portfolio_cost > 0:
-        st.metric(label="Cost to set up the portfolio", value = ('$'+str(abs(portfolio_cost))), delta='Cash Out',delta_color= "inverse")
+        st.metric(label="Cost to set up the portfolio", value = ('$'+str(abs(portfolio_cost))), delta='Loss',delta_color= "inverse")
     if portfolio_cost < 0:
-        st.metric(label="Cost to set up the portfolio", value = ('$'+str(abs(portfolio_cost))), delta='Cash In')
+        st.metric(label="Cost to set up the portfolio", value = ('$'+str(abs(portfolio_cost))), delta='Profit')
 
     # op.single_plotter(save=True,file='simple_option.jpeg')
     # image=Image.open("simple_option.jpeg")
@@ -162,8 +165,17 @@ if option == 'PayOff Calculator':
             for i in range(len(sps)):
                 sT=np.arange(0,2*underlying_price,1)
                 payoff_short_put+=put_payoff(sT, sps[i], spp[i])*-1
-        netpay=payoff_long_call+payoff_short_call+payoff_long_put+payoff_short_put
-        plot_data = pd.DataFrame({'Stock Price': sT, 'Net Payoff': netpay})
+        sT = np.arange(0,2*underlying_price,1)
+        # long_stock=np.arange(-underlying_price,netpay,1)
+        net_pay=payoff_long_call+payoff_short_call+payoff_long_put+payoff_short_put
+        if option_ls=='Long':
+            net_pay=net_pay+sT-underlying_price
+        if option_ls=='Short':
+            net_pay=net_pay+underlying_price-sT
+        # long_stock=np.arange(-underlying_price,netpay,1)
+        # net_payy=netpay+long_stock
+        plot_data = pd.DataFrame({'Stock Price': sT, 'Net Payoff': net_pay})
+        # plot_data=plot_data['Net Payoff']-underlying_price
         return plot_data
 
     dataset = plot_final(underlying_price)               
