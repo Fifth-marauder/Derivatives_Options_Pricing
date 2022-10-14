@@ -48,7 +48,7 @@ if option == 'PayOff Calculator':
     layout=st.sidebar.columns(2)
 
     with layout[0]:
-        long_call = st.sidebar.slider("Long Call",0,3,value=1)
+        long_call = st.sidebar.slider("Long Call",0,3)
         short_call = st.sidebar.slider("Short Call",0,3)
 
     with layout[-1]:
