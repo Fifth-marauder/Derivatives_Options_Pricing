@@ -14,7 +14,7 @@ option = st.sidebar.selectbox(
 
 # st.write('You selected:', option)
 st.header(option)
-st.write(""" ***By   :    Anu Varshini R, Abishek Srikanth, Kailash S & Akash***
+st.write(""" ***By   :    Anu Varshini R***
 """ )
 # if option =='Stock Price':
 #     # st.subheader("Stock Price dashboard")
